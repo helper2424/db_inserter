@@ -13,7 +13,7 @@ object Main {
 
     if (this.config.clear) {
       val conn = DB.getConnection(this.config.name, this.config.user, this.config.pass)
-      conn.createStatement.execute("Delete from users;")
+      conn.createStatement.execute(s"Delete from ${this.config.model.toLowerCase.trim()};")
       conn.close()
     }
 
