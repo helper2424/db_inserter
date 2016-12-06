@@ -1,6 +1,7 @@
 import java.util.concurrent.TimeUnit
 
 import akka.actor.{ActorRef, Actor, Props, ActorSystem}
+import models.{User, Base}
 
 object Main {
   private var config:ScoptConfig = null
@@ -13,7 +14,13 @@ object Main {
 
     if (this.config.clear) {
       val conn = DB.getConnection(this.config.name, this.config.user, this.config.pass)
-      conn.createStatement.execute(s"Delete from ${this.config.model.toLowerCase.trim()};")
+
+      val singleton: Option[Base] = this.config.model.toLowerCase.trim() match {
+        case "user" => Some(User)
+        case _ => Some(null)
+      }
+
+      conn.createStatement.execute(s"Delete from ${singleton.get.table};")
       conn.close()
     }
 
