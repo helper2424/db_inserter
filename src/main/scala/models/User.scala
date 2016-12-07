@@ -15,16 +15,28 @@ object User extends Base {
       scala.util.Random.nextInt(10).toString, //api_type
       s"'${id.toString}'", //api_uid
       scala.util.Random.nextInt(10).toString, // cohort
-      scala.util.Random.nextString(40),// csrf_token
+      scala.util.Random.nextInt(10).toString,// csrf_token
       scala.util.Random.nextInt(10).toString, // game level
-      scala.util.Random.nextString(40), // game_token
+      scala.util.Random.nextInt(10).toString, // game_token
       scala.util.Random.nextInt(10).toString,  // healths
       scala.util.Random.nextInt(10).toString,  // hard_cur
-      scala.util.Random.nextInt(10).toString,  // healths
-      "2001-09-28 01:00:00", "255.255.255.255",
-      scala.util.Random.nextString(40), // session
-      "0", scala.util.Random.nextString(40))
+      "'2001-09-28 01:00:00'", "'255.255.255.255'",
+      randomString(40), // session
+      "0", randomString(40))
     s"(${values.mkString(",") })"
   }
   def maxValuesPerRequest:Int = 1000
+  def randomString(symbols:Int) = s"'${randomAlpha(symbols)}'"
+  def randomStringFromCharList(length: Int, chars: Seq[Char]): String = {
+    val sb = new StringBuilder
+    for (i <- 1 to length) {
+      val randomNum = util.Random.nextInt(chars.length)
+      sb.append(chars(randomNum))
+    }
+    sb.toString
+  }
+  def randomAlpha(length: Int): String = {
+    val chars = ('a' to 'z') ++ ('A' to 'Z')
+    randomStringFromCharList(length, chars)
+  }
 }
